@@ -5,6 +5,7 @@ List of recipes as functions which initialise a list of steps
 
 # Correct integer division
 from __future__ import division
+import math
 
 # Import class modules
 import ingredients_JB as ing
@@ -289,7 +290,7 @@ def Init_A02(guests, t_serve):
     
     step7 = st.Step("Add $qt1 butter to the heated pan. Add the scallops to the pan, frying them for 1.5 min on each side.",\
                     [butter, scallop], [["add"],["fry"]], [], [], [step5, step6],\
-                    {"set_t_active":3, "set_t_bckg":0, "set_t_idle":0.1})
+                    {"set_t_active":3 * math.ceil(guests/3), "set_t_bckg":0, "set_t_idle":0.1})
     scallops_cooked = step7.get_output("SuperIngredient")
     
     step8 = st.Step("Squeeze $qt1 lemon on the scallops and take off the heat.",\
