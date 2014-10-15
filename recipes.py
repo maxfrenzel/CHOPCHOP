@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # -*- coding: utf-8 -*-
 '''
 List of recipes as functions which initialise a list of steps
@@ -7,13 +7,7 @@ List of recipes as functions which initialise a list of steps
 # Correct integer division
 from __future__ import division
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> FETCH_HEAD
-=======
->>>>>>> FETCH_HEAD
 import math
 
 # Import class modules
