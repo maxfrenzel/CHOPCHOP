@@ -324,7 +324,9 @@ def Init_A01(guests, t_serve):
                     {"set_t_active":2.0+0.5*guests, "set_t_bckg":0, "set_t_idle":5.0})
     dish = step11.get_output("Dish")
     
-    step_serve = st.Step("Serve the salade niçoise.",\
+    #step_serve = st.Step("Serve the salade ni" + u"\u00E7" + "oise.",\
+    #                    [dish], [["serve"]], [], [], [step11], {"flags":["serve"], "serving_time":t_serve})
+    step_serve = st.Step("Serve the salade nicoise.",\
                         [dish], [["serve"]], [], [], [step11], {"flags":["serve"], "serving_time":t_serve})
                             
     # -------------------------------------------------
