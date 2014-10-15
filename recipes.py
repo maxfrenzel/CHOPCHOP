@@ -1163,5 +1163,4 @@ def Init_A08(guests, t_serve):
     # -------------------------------------------------
     # Return list
     
->>>>>>> FETCH_HEAD
     return dish_list
