@@ -250,7 +250,7 @@ def Init_A01(guests, t_serve):
     raw_tuna = ing.Ingredient(guests, 150.0, "g")
     sesame_seeds = ing.Ingredient(guests, 12.5, "g")
     sugarsnap_peas = ing.Ingredient(guests, 50.0, "g")
-    samphire = ing.Ingredient(guests, 50,0, "g")
+    samphire = ing.Ingredient(guests, 50.0, "g")
     rocket = ing.Ingredient(guests, 12.5, "g")
     cherry_tomato = ing.Ingredient(guests, 37.5, "g")
     ev_olive_oil = ing.Ingredient(guests, 0.25, "Tbsp")
