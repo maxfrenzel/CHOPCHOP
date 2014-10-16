@@ -462,6 +462,34 @@ def Init_A04(guests, t_serve):
     
     # New utensil: pan_sauce (medium saucepan)
     
+    # -------------------------------------------------
+    # Steps
+    
+    step1 = st.Step("Wash $qt1 of baby carrots, $qt2 of asparagus, and $qt3 orange. Trim the ends of the vegetables and halve the baby carrots lenghwise.", \
+                    [baby_carrots, asparagus, orange], [["wash", "cut"],["wash", "cut"],["wash"]], [], [], [], \
+                    {"set_t_active":1+0.8*guests, "set_t_bckg":0, "set_t_idle":60.0})
+    
+    step2 = st.Step("In a medium saucepan, bring salted water to a boil.",\
+                    [], [], [pan_sauce], [["heat"]], [],\
+                    {"set_t_active":0.5, "set_t_bckg":3.0, "set_t_idle":0.2})
+    # Tip: "To save time, always use a kettle to boil the water!"
+    
+    step3 = st.Step("Add the baby carrots to the boiling water and cook for 8 minutes until tender.",\
+                    [baby_carrots], [["boil"]], [], [], [step1, step2],\
+                    {"set_t_active":0.5, "set_t_bckg":8.0, "set_t_idle":0.5})
+    carrots_boiled = step3.get_output("SuperIngredient")
+            
+    step4 = st.Step("Drain the carrots and set aside.",\
+                    [carrots_boiled], [["drain"]], [], [], [step3],\
+                    {"set_t_active":0.5, "set_t_bckg":0, "set_t_idle":60})
+    
+    step5 = st.Step("Rinse $qt1 of duck breasts and pat dry. Trim the edges and cut off any extra skin. Score the skin with a sharp knife, cutting diagonally to make 3 cm-wide diamonds. Season the breasts on both sides with salt and pepper.",\
+                    [duck_breast], [["wash","cut","season"]], [], [], [],\
+                    {"set_t_active":1+1*guests, "set_t_bckg":0, "set_t_idle":5})
+    # Tip: "When scoring, cut only the skin and not into the meat!"
+    # Add "score" as an action (vs. cut)
+    
+ 
     
 # -------------------------------------------------
 # -------------------------------------------------
