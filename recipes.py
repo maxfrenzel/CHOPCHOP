@@ -489,7 +489,31 @@ def Init_A04(guests, t_serve):
     # Tip: "When scoring, cut only the skin and not into the meat!"
     # Add "score" as an action (vs. cut)
     
+    step6 = st.Step("Preheat a large skillet to medium-high heat.",\
+                    [], [], [pan_fry],[["heat"]], [],\
+                    {"set_t_active":0.5, "set_t_bckg":2, "set_t_idle":1})
+                    
+    step7 = st.Step("Sear the breasts skin side down for 5 minutes until the skin turns golden brown.",\
+                    [duck_breast], [["fry"]], [], [], [step5, step6],\
+                    {"set_t_active":5, "set_t_bckg":0, "set_t_idle":0.5})
+                    
+    step8 = st.Step("Reduce the heat to medium and cook for another 4 minutes.",\
+                    [duck_breast], [["fry"]], [], [], [step7],\
+                    {"set_t_active":4, "set_t_bckg":0, "set_t_idle":0.5})
+                                    
+    step9 = st.Step("Flip the duck breat and cook the other side for an additional 5 minutes.",\
+                    [duck_breast], [["fry"]], [],[], [step8],\
+                    {"set_t_active":5, "set_t_bckg":0, "set_t_idle":0.5})
+    duck_cooked = step9.get_output("SuperIngredient")
+    # Tip: "Cook 1-2 minutes longer for medium well!"
+                    
+    step10 = st.Step("Take the breasts off heat and cover them with foil to rest.",\
+                    [duck_cooked], [["rest"]], [],[], [step9],\
+                    {"set_t_active":1, "set_t_bckg":5, "set_t_idle":10})    
  
+    # We need to think about how we can turn steps 7-9 into a step function if we have too many guests and can't fit all the duck breasts into 1 skillet.
+    
+    
     
 # -------------------------------------------------
 # -------------------------------------------------
