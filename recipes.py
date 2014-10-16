@@ -434,6 +434,27 @@ def Init_A02(guests, t_serve):
     
     return dish_list
     
+    
+# -------------------------------------------------
+# -------------------------------------------------
+# A4: Honey glazed Magret de Canard
+
+def Init_A04(guests, t_serve):
+
+    # -------------------------------------------------
+    # Ingredients
+    
+    duck_breast = ing.Ingredient(guests, 250.0, "g")
+    honey = oth.Honey(guests, 1.50,"Tbsp")
+    balsamic_vinegar = ing.Ingredient(guests, 1, "Tbsp")
+    orange = ing.Ingredient(guests, 0.25)
+    thyme = ing.Ingredient(guests, 1, "sprig")
+    baby_carrots = ing.Ingredient(guests, 50.0, "g")
+    asparagus = ing.Ingredient(guests, 5, "stalk")
+    lemon = fru.Lemon(guests, 0.13)
+    
+    # New units: add "stalk"
+    
 # -------------------------------------------------
 # -------------------------------------------------
 # A5: Crispy Pork Belly with roasted grapes
