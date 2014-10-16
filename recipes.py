@@ -447,21 +447,20 @@ def Init_A04(guests, t_serve):
     duck_breast = ing.Ingredient(guests, 250.0, "g")
     honey = oth.Honey(guests, 1.50,"Tbsp")
     balsamic_vinegar = ing.Ingredient(guests, 1, "Tbsp")
-    orange = ing.Ingredient(guests, 0.25)
+    orange = ing.Ingredient(guests, 0.13)
     thyme = ing.Ingredient(guests, 1, "sprig")
     baby_carrots = ing.Ingredient(guests, 50.0, "g")
     asparagus = ing.Ingredient(guests, 5, "stalk")
     lemon = fru.Lemon(guests, 0.13)
+    olive_oil = liq.Oil_Olive(guests, 0.75, "Tbsp")
     
     # New units: add "stalk"
     
     # -------------------------------------------------
     # Utensils
     pan_fry = ute.Pan()
-    pan_sauce = ute.Pan()
-    
-    # New utensil: pan_sauce (medium saucepan)
-    
+    oven = ute.Oven()
+       
     # -------------------------------------------------
     # Steps
     
@@ -469,78 +468,73 @@ def Init_A04(guests, t_serve):
                     [baby_carrots, asparagus, orange], [["wash", "cut"],["wash", "cut"],["wash"]], [], [], [], \
                     {"set_t_active":1+0.8*guests, "set_t_bckg":0, "set_t_idle":60.0})
     
-    step2 = st.Step("In a medium saucepan, bring salted water to a boil.",\
-                    [], [], [pan_sauce], [["heat"]], [],\
-                    {"set_t_active":0.5, "set_t_bckg":3.0, "set_t_idle":0.2})
-    # Tip: "To save time, always use a kettle to boil the water!"
+    step2 = st.Step("Preheat the oven to 200°C.",\
+                    [], [], [oven], [["heat"]], [],\
+                    {"set_t_active":0.5, "set_t_bckg":10, "set_t_idle":30})
     
-    step3 = st.Step("Add the baby carrots to the boiling water and cook for 8 minutes until tender.",\
-                    [baby_carrots], [["boil"]], [], [], [step1, step2],\
-                    {"set_t_active":0.5, "set_t_bckg":8.0, "set_t_idle":0.5})
-    carrots_boiled = step3.get_output("SuperIngredient")
-            
-    step4 = st.Step("Drain the carrots and set aside.",\
-                    [carrots_boiled], [["drain"]], [], [], [step3],\
-                    {"set_t_active":0.5, "set_t_bckg":0, "set_t_idle":60})
+    step3 = st.Step("In a baking dish, place the carrots and asparagus and drizzle with $qt1 of olive oil and $qt2 of honey. Toss until completely covered and season with salt and pepper. Bake in the oven for 20 minutes until tender.",\
+                    [olive_oil, honey, baby_carrots, asparagus], [["mix"], ["mix"], ["mix", "roast"], ["mix", "roast"]], [], [], [step1, step2],\
+                    {"set_t_active":4, "set_t_bckg":20, "set_t_idle":1})
+    veg_roasted = step3.get_output("SuperIngredient")
+    # Tip: "Keep an eye out on the veggies and toss them around halfway through cooking time." 
     
-    step5 = st.Step("Rinse $qt1 of duck breasts and pat dry. Trim the edges and cut off any extra skin. Score the skin with a sharp knife, cutting diagonally to make 3 cm-wide diamonds. Season the breasts on both sides with salt and pepper.",\
+    step4 = st.Step("Rinse $qt1 of duck breasts and pat dry. Trim the edges and cut off any extra skin. Score the skin with a sharp knife, cutting diagonally to make 3 cm-wide diamonds. Season both sides with salt and pepper.",\
                     [duck_breast], [["wash","cut","season"]], [], [], [],\
                     {"set_t_active":1+1*guests, "set_t_bckg":0, "set_t_idle":5})
     # Tip: "When scoring, cut only the skin and not into the meat!"
     # Add "score" as an action (vs. cut)
     
-    step6 = st.Step("Preheat a large skillet to medium-high heat.",\
+    step5 = st.Step("Preheat a large skillet to medium-high heat.",\
                     [], [], [pan_fry],[["heat"]], [],\
                     {"set_t_active":0.5, "set_t_bckg":2, "set_t_idle":1})
                     
-    step7 = st.Step("Sear the breasts skin side down for 5 minutes until the skin turns golden brown.",\
-                    [duck_breast], [["fry"]], [], [], [step5, step6],\
+    step6 = st.Step("Sear the breasts skin side down for 5 minutes until the skin turns golden brown.",\
+                    [duck_breast], [["fry"]], [], [], [step4, step5],\
                     {"set_t_active":5, "set_t_bckg":0, "set_t_idle":0.5})
                     
-    step8 = st.Step("Reduce the heat to medium and cook for another 4 minutes.",\
-                    [duck_breast], [["fry"]], [], [], [step7],\
+    step7 = st.Step("Reduce the heat to medium and cook for another 4 minutes.",\
+                    [duck_breast], [["fry"]], [], [], [step6],\
                     {"set_t_active":4, "set_t_bckg":0, "set_t_idle":0.5})
                                     
-    step9 = st.Step("Flip the duck breat and cook the other side for an additional 5 minutes.",\
-                    [duck_breast], [["fry"]], [],[], [step8],\
+    step8 = st.Step("Flip the duck breat and cook the other side for 5 more minutes.",\
+                    [duck_breast], [["fry"]], [],[], [step7],\
                     {"set_t_active":5, "set_t_bckg":0, "set_t_idle":0.5})
-    duck_cooked = step9.get_output("SuperIngredient")
+    duck_cooked = step8.get_output("SuperIngredient")
     # Tip: "Cook 1-2 minutes longer for medium well!"
                     
+    step9 = st.Step("Take the carrots and asparagus out of the oven and drizzle with juice of $qt1 lemon.",\
+                    [lemon, veg_roasted], [["add"], ["rest"]], [],[], [step3],\
+                    {"set_t_active":1, "set_t_bckg":3, "set_t_idle":10})  
+    veg_done = step9.get_output("SuperIngredient") 
+    
     step10 = st.Step("Take the breasts off heat and cover them with foil to rest.",\
-                    [duck_cooked], [["rest"]], [],[], [step9],\
-                    {"set_t_active":1, "set_t_bckg":5, "set_t_idle":10})    
- 
-    # We need to think about how we can turn steps 7-9 into a step function if we have too many guests and can't fit all the duck breasts into 1 skillet.
+                    [duck_cooked], [["rest"]], [],[], [step8],\
+                    {"set_t_active":1, "set_t_bckg":5, "set_t_idle":5})     
+    # We need to think about how we can turn steps 6-8 into a step function if we have too many guests and can't fit all the duck breasts into 1 skillet.
     
-    step11 = st.Step("In the duck fat, add boiled baby carrots and asparagus, $qt1 of honey and the juice of $qt2 lemon. Cook for 7 minutes at medium-high heat until done.",\
-                    [honey, lemon, carrots_boiled, asparagus], [["add"], ["add"], ["fry"], ["fry"]], [],[], [step4, step10],\
-                    {"set_t_active":1, "set_t_bckg":7, "set_t_idle":0.5})
-    veg_done = step11.get_output("SuperIngredient")  
-    
-    step12 = st.Step("Pour out the duck fat and deglaze the pan with $qt1 of honey and $qt2 of balsamic vinegar. Add $qt3 of thyme leaves and the zest and juice of $qt4 orange. Stir around for 3 minutes as the sauce simmers and season with salt.",\
-                    [honey, balsamic_vinegar, thyme, orange],[["mix"], ["mix"], ["mix"], ["mix"]], [], [], [step11],\
+    step11 = st.Step("Pour out the duck fat and deglaze the pan with $qt1 of honey and $qt2 of balsamic vinegar. Add $qt3 of thyme leaves and the zest and juice of $qt4 orange. Stir around for 3 minutes as the sauce simmers and season with salt.",\
+                    [honey, balsamic_vinegar, thyme, orange],[["mix"], ["mix"], ["mix"], ["mix"]], [], [], [step10],\
                     {"set_t_active":4, "set_t_bckg":0, "set_t_idle":0.5})
-    balsamic_glaze = step12.get_output("SuperIngredient")    
+    balsamic_glaze = step11.get_output("SuperIngredient")    
                     
-    step13 = st.Step("Put the duck breasts back into the pan and coat the meat evenly with the honey balsamic glaze.",\
-                    [duck_cooked, balsamic_glaze],[["season"], ["add"]], [], [], [step12],\
+    step12 = st.Step("Put the duck breasts back into the pan and coat the meat evenly with the honey balsamic glaze.",\
+                    [duck_cooked, balsamic_glaze],[["season"], ["add"]], [], [], [step11],\
                     {"set_t_active":1, "set_t_bckg":0, "set_t_idle":0.5})
-    duck_done = step13.get_output("SuperIngredient")            
+    duck_done = step12.get_output("SuperIngredient")            
     
-    step14 = st.Step("Slice the duck breast thinly at an angle. Season the vegetables with salt and pepper and drizzle with remaining sauce.",\
-                    [duck_done, veg_done, balsamic_glaze],[["cut"], ["season"], ["add"]], [], [], [step13],\
+    step13 = st.Step("Slice the duck breast thinly at an angle. Place them on top of the roasted vegetables and drizzle with remaining sauce.",\
+                    [duck_done, veg_done, balsamic_glaze],[["cut"], ["season"], ["add"]], [], [], [step9, step12],\
                     {"flags":["final"],"set_t_active":1+0.8*guests, "set_t_bckg":0, "set_t_idle":0.5})
-    dish = step14.get_output("Dish")
+    dish = step13.get_output("Dish")
     
     step_serve = st.Step("Serve the duck breasts.",\
-                    [dish], [["serve"]], [], [], [step14], {"flags":["serve"], "serving_time":t_serve})
+                    [dish], [["serve"]], [], [], [step13], {"flags":["serve"], "serving_time":t_serve})
                             
     # -------------------------------------------------
     # Create list of steps
     
     dish_list = [step_serve]
-    for i in range(14):
+    for i in range(13):
         string = "step" + str(i+1)
         exec("dish_list.append(" + string + ")")
         
