@@ -269,32 +269,34 @@ def Init_A01(guests, t_serve):
     # Utensils
     pan_fry = ute.Pan()
     large_pot = ute.Pot()
-    # Add large pot for step X
+    # Add large pot for step 3
     
     # -------------------------------------------------
     # Steps
     
-    step1 = st.Step("Wash the sugar snaps, samphire, parsley, and tarragon. Peel the garlic cloves.", \
-                    [sugarsnap_peas, samphire, flat_leaf_parsley, tarragon, garlic], [["wash"],["wash"],["wash"],["wash"],["peel"]], [], [], [], \
-                    {"set_t_active":5.0, "set_t_bckg":0, "set_t_idle":20.0})
-    
-    step2 = st.Step("For the vinaigrette, combine $qt1 of garlic, $qt2 of dijon mustard, $qt3 of red wine vinegar, juice of $qt4 lemon, $qt5 of flat-leaf parsley, $qt6 of freh tarragon. Blend until smooth and add $qt7 extra virgin olive oil and pulse just until incorporated. Season with salt and pepper and set aside so the flavours can marry.",\
-                    [garlic, dijon_mustard, red_wine_vinegar, lemon, flat_leaf_parsley, tarragon, ev_olive_oil], [["blend"],["blend"], ["blend"], ["squeeze"],["blend"],["blend"],["blend"]], [], [], [step1],\
+    step1 = st.Step("Peel $qt1 of garlic. Combine the garlic, $qt2 of dijon mustard, $qt3 of red wine vinegar, juice of $qt4 lemon, $qt5 of flat-leaf parsley, $qt6 of freh tarragon. Blend until smooth and add $qt7 extra virgin olive oil and pulse just until incorporated. Season with salt and pepper and set aside.",\
+                    [garlic, dijon_mustard, red_wine_vinegar, lemon, flat_leaf_parsley, tarragon, ev_olive_oil], [["peel", "blend"],["blend"], ["blend"], ["squeeze"],["blend"],["blend"],["blend"]], [], [], [],\
                     {"set_t_active":5.0, "set_t_bckg":0, "set_t_idle":1440.0})
-    vinaigrette = step2.get_output("SuperIngredient")
+    vinaigrette = step1.get_output("SuperIngredient")
+    # Tip: "The vinaigrette can be made a day in advance!"
+    
+    step2 = st.Step("Wash $qt1 of sugar snaps and $qt2 of samphire.", \
+                    [sugarsnap_peas, samphire], [["wash"],["wash"]], [], [], [], \
+                    {"set_t_active":1+0.5*guests, "set_t_bckg":0, "set_t_idle":20.0})
     
     step3 = st.Step("Salt a large pot of water and bring to a boil.",\
                     [], [], [large_pot], [["heat"]], [],\
                     {"set_t_active":0.5, "set_t_bckg":3.0, "set_t_idle":0.2})
     
-    step4 = st.Step("Place $qt1 of sugar snaps and $qt2 of samphire into the boiling water. Cook for 2 min.",\
-                    [sugarsnap_peas, samphire], [["boil"],["boil"]], [], [], [step1, step3],\
+    step4 = st.Step("Place the sugar snaps and samphire into the boiling water. Cook for 2 min.",\
+                    [sugarsnap_peas, samphire], [["boil"],["boil"]], [], [], [step2, step3],\
                     {"set_t_active":0.5, "set_t_bckg":2, "set_t_idle":0.5})
     
     step5 = st.Step("Remove the sugar snaps and samphire from the pot and rinse them with cold water until they've cooled down completely. Drain well.",\
                     [sugarsnap_peas, samphire], [["drain"],["drain"]], [], [], [step4],\
                     {"set_t_active":2.0, "set_t_bckg":3.0, "set_t_idle":20.0})
     greens_boiled = step5.get_output("SuperIngredient")
+    # Tip: "Cold water is essential to preserve the colour and stop the cooking process of your blanched vegetables."
                     
     step6 = st.Step("Place $qt1 of sesame seeds on a plate and season generously with freshly ground black pepper. Cut the tuna in 200g pieces and press a piece of tuna into seed mixture to coat. Turn over and coat the other side. Repeat with remaining tuna.",\
                     [sesame_seeds, raw_tuna], [["arrange"],["season"]], [], [], [],\
@@ -306,9 +308,10 @@ def Init_A01(guests, t_serve):
                     {"set_t_active":0.1, "set_t_bckg":2, "set_t_idle":0.5})
                     
     step8 = st.Step("Add olive oil to the heated pan. Sear the tuna for 1 minute on each side for medium–rare.",\
-                    [olive_oil, tuna_seasoned], [["add"],["fry"]], [],[], [step6,step7],\
+                    [olive_oil, tuna_seasoned], [["add"],["fry"]], [],[], [step6, step7],\
                     {"set_t_active":3 * math.ceil(guests/3), "set_t_bckg":0, "set_t_idle":0.2})
     tuna_seared = step8.get_output("SuperIngredient")
+    # Tip: "Cook 1.5 min for medium, 2 min for medium-well."
                     
     step9 = st.Step("Take tuna off heat and let it cool for 5 minutes before slicing.",\
                     [tuna_seared], [["rest"]], [],[], [step8],\
@@ -320,7 +323,7 @@ def Init_A01(guests, t_serve):
     salad = step10.get_output("SuperIngredient")
                     
     step11 = st.Step("Slice the tuna in 0.5 cm thickness and arrange on top of the salad. Drizzle the vinaigrette.",\
-                    [tuna_seared, salad, vinaigrette], [["cut"],["arrange"],["add"]], [],[], [step2, step9, step10],\
+                    [tuna_seared, salad, vinaigrette], [["cut"],["arrange"],["add"]], [],[], [step1, step9, step10],\
                     {"set_t_active":2.0+0.5*guests, "set_t_bckg":0, "set_t_idle":5.0})
     dish = step11.get_output("Dish")
     
