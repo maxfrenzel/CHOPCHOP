@@ -455,6 +455,14 @@ def Init_A04(guests, t_serve):
     
     # New units: add "stalk"
     
+    # -------------------------------------------------
+    # Utensils
+    pan_fry = ute.Pan()
+    pan_sauce = ute.Pan()
+    
+    # New utensil: pan_sauce (medium saucepan)
+    
+    
 # -------------------------------------------------
 # -------------------------------------------------
 # A5: Crispy Pork Belly with roasted grapes
