@@ -412,7 +412,7 @@ def Init_A02(guests, t_serve):
     step9 = st.Step("On each plate, arrange a bed of apple sticks and watercress in the middle and place 3 scallops per person. Mix in $qt1 of olive oil to the saffron honey vinaigrette and drizzle over each plate.",\
                     [salad_prep, scallops_done, olive_oil, dressing],\
                     [["arrange"],["arrange"],["mix"],["mix"]], [], [], [step3,step4,step8],\
-                    {"set_t_active":3, "set_t_bckg":0, "set_t_idle":2})
+                    {"set_t_active":1+0.5*guests, "set_t_bckg":0, "set_t_idle":2})
     scallop_salad = step9.get_output("Dish")
     
     """step10 = st.Step("Mix in $qt1 of olive oil to the saffron honey vinaigrette. Drizzle over each plate.",\
@@ -585,8 +585,8 @@ def Init_A05(guests, t_serve):
                     [], [], [oven], [["heat"]], [],\
                     {"set_t_active":0.5, "set_t_bckg":20, "set_t_idle":30})
     
-    step4 = st.Step("Wash and roughly chop $qt1 of thyme and $qt2 of rosemary. Peel $qt3 garlic cloves.",\
-                    [thyme,rosemary,garlic], [["wash", "chop"],["wash", "chop"],["peel"]], [], [], [],\
+    step4 = st.Step("Roughly chop $qt1 of thyme and $qt2 of rosemary. Peel $qt3 garlic cloves.",\
+                    [thyme,rosemary,garlic], [["chop"],["chop"],["peel"]], [], [], [],\
                     {"set_t_active":0.8*guests, "set_t_bckg":0, "set_t_idle":10})
     
     step5 = st.Step("Put the herbs, garlic, and olive oil in the blender. Blend well.",\
@@ -615,6 +615,7 @@ def Init_A05(guests, t_serve):
     step9 = st.Step("Turn the oven down to 180°C/Gas Mark 4 and continue roasting the meat for another hour.",\
                     [pork_jus], [["roast"]], [],[], [step8],\
                     {"set_t_active":0.5, "set_t_bckg":60, "set_t_idle":1})
+    # Cooking time varies depending on the quantity of the meat
                     
     step10 = st.Step("Turn the oven down to 110°C/Gas Mark 1/4. Throw in small clusters of grapes to roast together in jus and continue roasting for another 20 min until the skin has formed a complete crackling.",\
                     [pork_jus, grapes], [["roast"],["roast"]], [],[], [step9],\
@@ -626,9 +627,8 @@ def Init_A05(guests, t_serve):
                     {"set_t_active":0.5, "set_t_bckg":10, "set_t_idle":2})
     
     step12 = st.Step("Cut the belly into decent sized squares per person and arrange with the jus, bay leaves and roasted grapes.",\
-                            [pork_done],\
-                            [["arrange"]], [], [], [step11],\
-                            {"flags":["final"],"set_t_active":1*(guests**0.8), "set_t_bckg":0, "set_t_idle":0.1})
+                    [pork_done],[["arrange"]], [], [], [step11],\
+                    {"flags":["final"],"set_t_active":1*(guests**0.8), "set_t_bckg":0, "set_t_idle":0.1})
     dish = step12.get_output("Dish")
     
     step_serve = st.Step("Serve the pork.",\
