@@ -513,7 +513,41 @@ def Init_A04(guests, t_serve):
  
     # We need to think about how we can turn steps 7-9 into a step function if we have too many guests and can't fit all the duck breasts into 1 skillet.
     
+    step11 = st.Step("In the duck fat, add boiled baby carrots and asparagus, $qt1 of honey and the juice of $qt2 lemon. Cook for 7 minutes at medium-high heat until done.",\
+                    [honey, lemon, carrots_boiled, asparagus], [["add"], ["add"], ["fry"], ["fry"]], [],[], [step4, step10],\
+                    {"set_t_active":1, "set_t_bckg":7, "set_t_idle":0.5})
+    veg_done = step11.get_output("SuperIngredient")  
     
+    step12 = st.Step("Pour out the duck fat and deglaze the pan with $qt1 of honey and $qt2 of balsamic vinegar. Add $qt3 of thyme leaves and the zest and juice of $qt4 orange. Stir around for 3 minutes as the sauce simmers and season with salt.",\
+                    [honey, balsamic_vinegar, thyme, orange],[["mix"], ["mix"], ["mix"], ["mix"]], [], [], [step11],\
+                    {"set_t_active":4, "set_t_bckg":0, "set_t_idle":0.5})
+    balsamic_glaze = step12.get_output("SuperIngredient")    
+                    
+    step13 = st.Step("Put the duck breasts back into the pan and coat the meat evenly with the honey balsamic glaze.",\
+                    [duck_cooked, balsamic_glaze],[["season"], ["add"]], [], [], [step12],\
+                    {"set_t_active":1, "set_t_bckg":0, "set_t_idle":0.5})
+    duck_done = step13.get_output("SuperIngredient")            
+    
+    step14 = st.Step("Slice the duck breast thinly at an angle. Season the vegetables with salt and pepper and drizzle with remaining sauce.",\
+                    [duck_done, veg_done, balsamic_glaze],[["cut"], ["season"], ["add"]], [], [], [step13],\
+                    {"flags":["final"],"set_t_active":1+0.8*guests, "set_t_bckg":0, "set_t_idle":0.5})
+    dish = step14.get_output("Dish")
+    
+    step_serve = st.Step("Serve the duck breasts.",\
+                    [dish], [["serve"]], [], [], [step14], {"flags":["serve"], "serving_time":t_serve})
+                            
+    # -------------------------------------------------
+    # Create list of steps
+    
+    dish_list = [step_serve]
+    for i in range(14):
+        string = "step" + str(i+1)
+        exec("dish_list.append(" + string + ")")
+        
+    # -------------------------------------------------
+    # Return list
+    
+    return dish_list
     
 # -------------------------------------------------
 # -------------------------------------------------
